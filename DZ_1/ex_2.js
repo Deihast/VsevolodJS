@@ -103,6 +103,7 @@ console.log('Level three: \n')
 
 let price3 = 0;
 let change3 = 0;
+let k = 0;
 
 const potato2 = a.potato * b.ptt;
 const salt2 = 300; //a.salt * b.slt;
@@ -112,6 +113,7 @@ const cabbage2 = 700; //a.cabbage * b.cbg;
 
 if (potato2 < wallet){
     change3 = wallet - potato2;
+    k++;
     console.log('You can buy potato, '+change3+' money left');
 } else if (potato2 === wallet){
     console.log('Take only this.');
@@ -121,9 +123,11 @@ if (potato2 < wallet){
 
 if (salt2 < wallet && change3 === 0){
     change3 = wallet - salt2;
+    k++;
     console.log('You can buy salt, '+change3+' money left.');
 } else if (salt2 < change3){
     change3 -= salt2;
+    k++;
     console.log('You can buy salt, '+change3+' money left.');
 } else{
     console.log('Try buy something else');
@@ -131,9 +135,11 @@ if (salt2 < wallet && change3 === 0){
 
 if (milk2 < wallet && change3 === 0){
     change3 = wallet - milk2;
+    k++;
     console.log('You can buy milk, '+change3+' money left.');
 } else if (milk2 < change3){
     change3 -= milk2;
+    k++;
     console.log('You can buy milk, '+change3+' money left.');
 } else{
     console.log('Try buy something else');
@@ -141,9 +147,11 @@ if (milk2 < wallet && change3 === 0){
 
 if (tomato2 < wallet && change3 === 0){
     change3 = wallet - tomato2;
+    k++;
     console.log('You can buy tomato, '+change3+' money left.');
 } else if (tomato2 < change3){
     change3 -= tomato2;
+    k++;
     console.log('You can buy tomato, '+change3+' money left.');
 } else{
     console.log('Try buy something else');
@@ -151,12 +159,15 @@ if (tomato2 < wallet && change3 === 0){
 
 if (cabbage2 < wallet && change3 === 0){
     change3 = wallet - cabbage2;
+    k++;
     console.log('You can buy cabbage, '+change3+' money left. \n');
 } else if (cabbage2 < change3){
     change3 -= cabbage2;
+    k++;
     console.log('You can buy cabbage, '+change3+' money left. \n');
 } else{
     console.log('Try buy something else \n');
 }
 
 console.log('Total change: '+change3);
+console.log('Amount of products you bought: '+k);
