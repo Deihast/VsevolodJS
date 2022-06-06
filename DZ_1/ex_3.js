@@ -5,7 +5,9 @@ const totalPrice = 50;
 const month = 'January';
 const name = 'Steve Jobs';
 
-let earnings; let expenses; let profit;
+let earnings; 
+let expenses; 
+let profit;
 
 earnings = amount * totalPrice;
 expenses = (amount * price) + delivery;

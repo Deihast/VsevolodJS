@@ -1,7 +1,9 @@
 const a = '5';
 const b = 'w';
 const c = 12;
-let result1; let result2; let result3;
+let result1; 
+let result2; 
+let result3;
 
 result1 = a**2;
 result2 = b**2;

@@ -2,10 +2,10 @@
 
 const wallet = 300;
 let price;
-let change; let more;
+let change; 
+let more;
 
 const myList = {        //Amount kg or litres of products you need
-
     ptt : 3,
     slt : 1,
     mlk : 2,
@@ -14,13 +14,11 @@ const myList = {        //Amount kg or litres of products you need
 };
 
 const pricePerOne = {
-
-    potato: 12, //kg
-    salt: 70, //kg
-    milk: 25, //liter
-    tomato: 50, //kg
-    cabbage: 36, //kg
-
+    potato: 12,     //kg
+    salt: 70,       //kg
+    milk: 25,       //liter
+    tomato: 50,     //kg
+    cabbage: 36,    //kg
 };
 
 const a = pricePerOne;
