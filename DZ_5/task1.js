@@ -23,6 +23,7 @@ class ProfileTemplate {
                     break;
                 case 'lastname':
                     this.lastName = changedSetting;
+                    break;
                 case 'age':
                     if (typeof(changedSetting) === 'number') {
                         this.age = changedSetting;
