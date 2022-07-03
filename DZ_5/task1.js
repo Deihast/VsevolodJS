@@ -3,7 +3,7 @@ var fs = require('fs');
 class ProfileTemplate {
     photo = '';
 
-    constructor(firstName, lastName, age, country, gender, uid){
+    constructor (firstName, lastName, age, country, gender, uid) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.age = age;
@@ -16,7 +16,7 @@ class ProfileTemplate {
 
     changeSettings = (setting, changedSetting) => {
         const currentSetting = setting.toLowerCase();
-        if (changedSetting !== undefined && changedSetting !== null) {
+        if (changedSetting) {
             switch (currentSetting) {
                 case 'firstname':
                     this.firstName = changedSetting;
@@ -45,7 +45,7 @@ class ProfileTemplate {
         } else {
             console.log('Invalid data!');
         }
-               
+
     };
 
     uploadPic = (pic) => {
@@ -54,44 +54,50 @@ class ProfileTemplate {
     };
 
     showInfo = () => {
-        console.log(`Name: ${this.firstName} ${this.lastName}\nAge: ${this.age}\nCountry: ${this.country}\nGender: ${this.gender}\nUser ID: ${this._uid}\n`);
+        console.log(`
+        Name: ${this.firstName} ${this.lastName}
+        Age: ${this.age}
+        Country: ${this.country}
+        Gender: ${this.gender}
+        User ID: ${this._uid}
+        `);
     };
 
     addFriend = (uid) => {
-        const idx = allUsers.indexOf(allUsers.find(user => user._uid === uid));
+        const idx = allUsers.findIndex(user => user._uid === uid);
         
-        if (this.friendList.find(user => user._uid === uid) === undefined && this._uid !== uid) {
+        if (!this.friendList.find(user => user._uid === uid) && this._uid !== uid) { 
             if (allUsers[idx].country === 'russia') {
-                console.log('This person can`t be your friend, add someone else...\n');
+                console.log('This person can`t be your friend, add someone else...');
             } else {
-                if (allUsers[idx] !== undefined) {
+                if (allUsers[idx]) {  
                     this.friendList.push(allUsers[idx]);
-                    console.log(`Successfully added to friendlist!\n`);
+                    console.log(`Successfully added to friendlist!`);
                 } else {
-                    console.log('Wrong data or this person haven`t created profile yet. Try again.\n');
+                    console.log('Wrong data or this person haven`t created profile yet. Try again.');
                 }
             }
         } else if (this._uid === uid) {
             console.log('You can`t add yourself!');
         } else {
-            console.log('You`ve already have this user in your friendlist!\n');
+            console.log('You`ve already have this user in your friendlist!');
         }
     };
     
     delFriend = (uid) => {
-        const idx = this.friendList.indexOf(this.friendList.find(user => user._uid === uid));
+        const idx = this.friendList.findIndex(user => user._uid === uid);
         
-        if (this.friendList[idx] !== undefined) {
+        if (this.friendList[idx]) {
             this.friendList.splice(idx, 1);
             console.log(`Successfully deleted!`);
         } else {
-            console.log('You dont have such user in your friendlist!\n');
+            console.log('You don`t have such user in your friendlist!');
         }
     };
 
     showFriendList = () => {
-        if (this.friendList.length === 0) {
-            console.log('You have no friends :( Try to add someone.\n');
+        if (!this.friendList.length) {
+            console.log('You have no friends :( Try to add someone.');
         } else {
             console.log('\nYour friendlist:');
             this.friendList.forEach((friend) => console.log(`${friend.firstName} ${friend.lastName}`));
@@ -99,9 +105,9 @@ class ProfileTemplate {
     };
 
     showFriendProfile = (uid) => {
-        const idx = this.friendList.indexOf(this.friendList.find(user => user._uid === uid));
+        const idx = this.friendList.findIndex(user => user._uid === uid);
 
-        if (this.friendList[idx] !== undefined) {
+        if (this.friendList[idx]) {
             console.log('\nYour friend full info: ');
             this.friendList[idx].showInfo();
         } else {
@@ -110,66 +116,90 @@ class ProfileTemplate {
     };
 
     findFriend = (firstName, lastName) => {
-        let firstNameIsValid = true;
-        let lastNameIsValid = true;
-        
-        if (firstName === undefined || firstName === null) {
-            firstNameIsValid = false;
-        }
-
-        if (lastName === undefined || lastName === null) {
-            lastNameIsValid = false;
-        }
-
-        if (!firstNameIsValid && !lastNameIsValid) {
+        if (!firstName && !lastName) {
             console.log('\nWrong data!\n');
         } else {
-            if (firstNameIsValid) {
+            if (firstName) {
                 console.log(`\nResults for name: ${firstName}\n`);
-                allUsers.forEach(user => {if (user.firstName === firstName) {console.log(user.firstName, user.lastName + `\nUser ID: ${user._uid}\n`)}});
+                allUsers.forEach(user => {
+                    if (user.firstName === firstName) {
+                        console.log(user.firstName, user.lastName + `\nUser ID: ${user._uid}\n`)
+                    }
+                });
             }
         }
     };
 
     receiveLetter = (uid, text) => {
-        this.mailbox.push({addresserUid: uid, messageText: text, type: 'recd'})
+        this.mailbox.push({addresserUid: uid, messageText: text, type: 'recd'});
     };
 
     sendLetter = (uid, text) => {
-        if (allUsers.find(user => user._uid === uid) !== undefined) {
-            const idx = allUsers.indexOf(allUsers.find(user => user._uid === uid));
+        if (allUsers.find(user => user._uid === uid)) {
+            const idx = allUsers.findIndex(user => user._uid === uid);
             this.mailbox.push({addresseeUid: uid, messageText: text, type: 'sent'});
             allUsers[idx].receiveLetter(this._uid, text);
         } else {
             console.log('User doesn`t exist');
         }
-        
     };
 
     showMail = (uid) => {
-        if (uid === undefined || uid === null) {
+        if (!uid) {
             console.log('All letters in your mailbox: \n');
             this.mailbox.forEach(letter => {
                 if (letter.type === 'recd') {
-                    const idx = allUsers.indexOf(allUsers.find(user => user._uid === letter.addresserUid));
-                    console.log(`From: ${allUsers[idx].firstName} ${allUsers[idx].lastName}\nTo: You\nMessage:\n\n${letter.messageText}\n************************`);
+                    const idx = allUsers.findIndex(user => user._uid === letter.addresserUid);
+                    console.log(`
+                    **********************
+                    From: ${allUsers[idx].firstName} ${allUsers[idx].lastName}
+                    To: You
+                    Message:\n
+                    ${letter.messageText}
+                    **********************
+                    `);
                 } else {
-                    const idx = allUsers.indexOf(allUsers.find(user => user._uid === letter.addresseeUid));
-                    console.log(`To: ${allUsers[idx].firstName} ${allUsers[idx].lastName}\nFrom: You\nMessage:\n\n${letter.messageText}\n************************`);
+                    const idx = allUsers.findIndex(user => user._uid === letter.addresseeUid);
+                    console.log(`
+                    **********************
+                    To: ${allUsers[idx].firstName} ${allUsers[idx].lastName}
+                    From: You
+                    Message:\n
+                    ${letter.messageText}
+                    **********************
+                    `);
                 }
             });
         } else {
             let letterExist;
-            const idx = allUsers.indexOf(allUsers.find(user => user._uid === uid));
-            if (allUsers[idx] !== undefined){
-                console.log(`================================\nAll letters to/from ${allUsers[idx].firstName} ${allUsers[idx].lastName}\n================================`);
+            const idx = allUsers.findIndex(user => user._uid === uid);
+            if (allUsers[idx]){
+                console.log(`
+                ================================
+                All letters to/from ${allUsers[idx].firstName} ${allUsers[idx].lastName}
+                ================================
+                `);
                 this.mailbox.forEach(letter => {
                     if (letter.type === 'recd' && letter.addresserUid === uid) {
-                        const idx = allUsers.indexOf(allUsers.find(user => user._uid === letter.addresserUid));                             
-                        console.log(`From: ${allUsers[idx].firstName} ${allUsers[idx].lastName}\nTo: You\nMessage:\n\n${letter.messageText}\n************************`);
+                        const idx = allUsers.findIndex(user => user._uid === letter.addresserUid);                             
+                        console.log(`
+                        ************************
+                        From: ${allUsers[idx].firstName} ${allUsers[idx].lastName}
+                        To: You
+                        Message:\n
+                        ${letter.messageText}
+                        ************************
+                        `);
                     } else if (letter.type === 'sent' && letter.addresseeUid === uid){
-                        const idx = allUsers.indexOf(allUsers.find(user => user._uid === letter.addresseeUid));
-                        console.log(`To: ${allUsers[idx].firstName} ${allUsers[idx].lastName}\nFrom: You\nMessage:\n\n${letter.messageText}\n************************`);
+                        const idx = allUsers.findIndex(user => user._uid === letter.addresseeUid);
+                        console.log(`
+                        ************************
+                        To: ${allUsers[idx].firstName} ${allUsers[idx].lastName}
+                        From: You
+                        Message:\n
+                        ${letter.messageText}
+                        ************************
+                        `);
                     } else {
                         letterExist = false;
                     }
@@ -210,8 +240,8 @@ const allUsers = [user1, user2, user3, user4, user5];
 // user1.addFriend(1003);
 // user1.addFriend(1002);
 // user1.addFriend(1002);
-// user1.addFriend(1004);
-// user1.addFriend(1005);
+// // user1.addFriend(1004);
+// // user1.addFriend(1005);
 // user1.showFriendList();
 // user1.showFriendProfile(1002);
 // user1.delFriend(1002);
@@ -219,13 +249,13 @@ const allUsers = [user1, user2, user3, user4, user5];
 
 // user1.findFriend('Vlad');
 
-// user1.sendLetter(1004, 'Hello there!');
-// user1.sendLetter(1004, 'How are you?');
-// user4.sendLetter(1001, 'Hi! Im fine, what about you?');
+user1.sendLetter(1004, 'Hello there!');
+user1.sendLetter(1004, 'How are you?');
+user4.sendLetter(1001, 'Hi! Im fine, what about you?');
 
-// user1.showMail();
-// user4.showMail(1001);
+user1.showMail();
+user4.showMail(1001);
 
-user1.changeSettings('fiRstNaMe', 'Vsevolod');
-user1.showInfo();
+// user1.changeSettings('fiRstNaMe','Vlad');
+// user1.showInfo();
 
